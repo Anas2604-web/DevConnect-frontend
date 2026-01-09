@@ -1,13 +1,15 @@
+import "./index.css";
 
 function App() {
-  
+
   return (
-    <>
-
-      <h1>Vite + React</h1>
-
-    </>
+   <div className="min-h-screen bg-black flex items-center justify-center">
+      <h1 className="text-white text-3xl font-bold">
+        Tailwind v4 is working 🚀
+      </h1>
+    </div>
   )
 }
 
 export default App
+
