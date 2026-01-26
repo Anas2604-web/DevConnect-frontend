@@ -1,4 +1,25 @@
+import axios from "axios";
+import { useState } from "react";
+
 const Login = () => {
+
+  const [email, setemail] = useState("")
+  const [password, setpassword] = useState("")
+
+   const handleLogin = async () => {
+    try {
+     const res =  await axios.post("http://localhost:5000/login", {
+       email,
+       password,
+     }, 
+    {
+      withCredentials: true
+    })
+    } catch(err) {
+      console.error(err);
+    }
+   }
+
   return (
     <div className="flex items-center justify-center bg-linear-to-b from-base-200 to-base-300 px-4 py-16">
       <div className="card w-full max-w-md bg-base-100 shadow-xl border border-base-content/10 rounded-2xl">
@@ -19,6 +40,8 @@ const Login = () => {
                 type="email"
                 placeholder="you@example.com"
                 className="input input-bordered w-full rounded-xl bg-base-200 focus:outline-none focus:border-primary"
+                value={email}
+                onChange={(e) => setemail(e.target.value)}
               />
             </label>
 
@@ -31,10 +54,15 @@ const Login = () => {
                 type="password"
                 placeholder="••••••••"
                 className="input input-bordered w-full rounded-xl bg-base-200 focus:outline-none focus:border-primary"
+                value={password}
+                onChange={(e) => setpassword(e.target.value)}
               />
             </label>
 
-            <button className="btn btn-primary w-full rounded-xl mt-4">
+            <button 
+             className="btn btn-primary w-full rounded-xl mt-4"
+             onClick={handleLogin}
+             >
               Login
             </button>
 
