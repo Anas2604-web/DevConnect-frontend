@@ -1,27 +1,36 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addUser } from "./utils/userSlice";
 
 const Login = () => {
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [error, setError] = useState("");
 
-  const [email, setemail] = useState("")
-  const [password, setpassword] = useState("")
+  const dispatch = useDispatch();
 
-   const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
     try {
-     const res =  await axios.post("http://localhost:5000/login", {
-       email,
-       password,
-     }, 
-    {
-      withCredentials: true
-    })
-    } catch(err) {
-      console.error(err);
+      const res = await axios.post(
+        "http://localhost:5000/login",
+        { email, password },
+        { withCredentials: true }
+      );
+
+      dispatch(addUser(res.data));
+      console.log("LOGIN SUCCESS:", res.data);
+    } catch (err) {
+      console.log("LOGIN ERROR:", err?.response?.data || err.message);
+      setError(err?.response?.data?.message || "Invalid email or password");
     }
-   }
+  };
 
   return (
-    <div className="flex items-center justify-center bg-linear-to-b from-base-200 to-base-300 px-4 py-16">
+    <div className="flex items-center justify-center bg-gradient-to-b from-base-200 to-base-300 px-4 py-16">
       <div className="card w-full max-w-md bg-base-100 shadow-xl border border-base-content/10 rounded-2xl">
         <div className="card-body">
           <div className="text-center">
@@ -31,7 +40,7 @@ const Login = () => {
             </p>
           </div>
 
-          <div className="mt-6 space-y-4">
+          <form onSubmit={handleLogin} className="mt-6 space-y-4">
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Email</span>
@@ -59,10 +68,11 @@ const Login = () => {
               />
             </label>
 
-            <button 
-             className="btn btn-primary w-full rounded-xl mt-4"
-             onClick={handleLogin}
-             >
+            {error && (
+              <p className="text-error text-sm font-medium">{error}</p>
+            )}
+
+            <button type="submit" className="btn btn-primary w-full rounded-xl mt-4">
               Login
             </button>
 
@@ -72,7 +82,7 @@ const Login = () => {
                 Sign up
               </a>
             </p>
-          </div>
+          </form>
         </div>
       </div>
     </div>
