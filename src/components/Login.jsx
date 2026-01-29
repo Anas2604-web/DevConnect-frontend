@@ -34,6 +34,7 @@ const Login = () => {
     }
   };
 
+
   return (
     <div className="flex items-center justify-center bg-gradient-to-b from-base-200 to-base-300 px-4 py-16">
       <div className="card w-full max-w-md bg-base-100 shadow-xl border border-base-content/10 rounded-2xl">
