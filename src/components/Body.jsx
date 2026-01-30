@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { URL } from "../utils/constants";
@@ -9,10 +9,13 @@ import { addUser } from "../utils/userSlice";
 
 const Body = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const user = useSelector((store) => store.user);
 
   const fetchUser = async () => {
+    if(user) return;
     try {
       const res = await axios.get(
         URL + "/profile/view",
@@ -20,15 +23,19 @@ const Body = () => {
       );
       dispatch(addUser(res.data));
     } catch (err) {
-       // nothing here
+      if (
+        err.response?.status === 401 &&
+        location.pathname !== "/login" && 
+        location.pathname !== "/"
+      ) {
+        navigate("/login");
+      }
     }
   };
 
   useEffect(() => {
-    if (!user) {
       fetchUser();
-    }
-  }, [user]);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
