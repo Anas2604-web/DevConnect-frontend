@@ -11,11 +11,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        URL + "/logout",
-        {},
-        { withCredentials: true }
-      );
+      await axios.post(URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
       navigate("/login");
     } catch (err) {
@@ -24,46 +20,48 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-300 text-base-content shadow-md px-6">
-      <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
-          👨🏻‍💻 DevConnect
-        </Link>
-      </div>
+    <div className="sticky top-0 z-50 
+  backdrop-blur-xl 
+  bg-gradient-to-r from-black/60 via-black/40 to-black/60
+  border-b border-white/10
+  shadow-[0_4px_30px_rgba(99,102,241,0.2)]
+  text-white px-6 py-3 flex justify-between items-center">
 
-      <div className="flex items-center gap-3">
+      <Link to="/" className="text-xl font-bold tracking-wide hover:opacity-90">
+        👨🏻‍💻 DevConnect
+      </Link>
+
+      <div className="flex items-center gap-4">
         {!user && (
-          <Link to="/login" className="btn btn-primary btn-sm">
+          <Link
+            to="/login"
+            className="px-4 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm"
+          >
             Login
           </Link>
         )}
 
         {user && (
           <>
-            <p className="font-medium">Welcome {user.firstName}</p>
+            <p className="text-sm opacity-80">Welcome {user.firstName}</p>
 
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="w-9 h-9 rounded-full ring-2 ring-indigo-500/70 hover:ring-indigo-400 transition overflow-hidden"
               >
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="user"
-                    src={user.photoUrl || "https://i.pravatar.cc/100"}
-                  />
-                </div>
+                <img
+                  alt="user"
+                  src={user.photoUrl || "https://i.pravatar.cc/100"}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
-              <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow">
+              <ul className="menu menu-sm dropdown-content mt-3 w-44 p-2 
+                bg-gray-900 text-white rounded-xl shadow-xl border border-white/10">
                 <li><Link to="/profile">Profile</Link></li>
-                <li><Link to="/settings">Settings</Link></li>
-                <li>
-                  <button onClick={handleLogout} className="text-error">
-                    Logout
-                  </button>
-                </li>
+                <li><button onClick={handleLogout} className="text-red-400">Logout</button></li>
               </ul>
             </div>
           </>
