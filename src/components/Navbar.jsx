@@ -62,6 +62,7 @@ const Navbar = () => {
                 bg-gray-900 text-white rounded-xl shadow-xl border border-white/10">
                 <li><Link to="/profile">Profile</Link></li>
                 <li><Link to="/connections">Connections</Link></li>
+                <li><Link to="/requests">Requests</Link></li>
                 <li><button onClick={handleLogout} className="text-red-400">Logout</button></li>
               </ul>
             </div>
