@@ -61,6 +61,7 @@ const Navbar = () => {
               <ul className="menu menu-sm dropdown-content mt-3 w-44 p-2 
                 bg-gray-900 text-white rounded-xl shadow-xl border border-white/10">
                 <li><Link to="/profile">Profile</Link></li>
+                <li><Link to="/connections">Connections</Link></li>
                 <li><button onClick={handleLogout} className="text-red-400">Logout</button></li>
               </ul>
             </div>
