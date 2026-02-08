@@ -8,6 +8,7 @@ import appStore from "./utils/appStore";
 import Feed from "./components/Feed";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+import { Toaster } from "react-hot-toast";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
     <>
     <Provider store={appStore}>
      <BrowserRouter basename="/">
+       <Toaster position="top-center" />
        <Routes>
           <Route path="/" element= {<Body />} >
             <Route path="/login" element= {<Login />} />
@@ -31,4 +33,3 @@ function App() {
 }
 
 export default App
-

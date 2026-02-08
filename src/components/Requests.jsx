@@ -2,7 +2,9 @@ import axios from "axios";
 import { URL } from "../utils/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestSlice";
+import { addRequests, removeRequestById } from "../utils/requestSlice";
+import { addOneConnection } from "../utils/connectionSlice";
+import toast from "react-hot-toast";
 
 const Requests = () => {
   const dispatch = useDispatch();
@@ -14,7 +16,6 @@ const Requests = () => {
         URL + "/user/requests/received",
         { withCredentials: true }
       );
-
       dispatch(addRequests(res.data.data));
     } catch (err) {
       console.error(err);
@@ -24,6 +25,28 @@ const Requests = () => {
   useEffect(() => {
     fetchRequests();
   }, []);
+
+  const handleReview = async (status, req) => {
+    try {
+      await axios.post(
+        URL + `/request/review/${status}/${req._id}`,
+        {},
+        { withCredentials: true }
+      );
+
+      dispatch(removeRequestById(req._id));
+
+      if (status === "accepted") {
+        dispatch(addOneConnection(req.fromUserId));
+        toast.success("Connection Added 🤝");
+      } else {
+        toast("Request Rejected");
+      }
+
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
 
   if (!requests || requests.length === 0) {
     return (
@@ -48,7 +71,7 @@ const Requests = () => {
           return (
             <div
               key={req._id}
-              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5 text-white"
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5 text-white transition hover:scale-[1.02]"
             >
               <div className="flex items-center gap-4">
                 <img
@@ -86,11 +109,17 @@ const Requests = () => {
               </div>
 
               <div className="flex gap-3 mt-5">
-                <button className="btn btn-success btn-sm flex-1 rounded-xl">
+                <button
+                  className="btn btn-success btn-sm flex-1 rounded-xl"
+                  onClick={() => handleReview("accepted", req)}
+                >
                   Accept
                 </button>
 
-                <button className="btn btn-error btn-sm flex-1 rounded-xl">
+                <button
+                  className="btn btn-error btn-sm flex-1 rounded-xl"
+                  onClick={() => handleReview("rejected", req)}
+                >
                   Reject
                 </button>
               </div>
