@@ -26,7 +26,7 @@ const Connections = () => {
 
   if (!connections || connections.length === 0) {
     return (
-      <div className="flex justify-center items-center h-[70vh] text-white">
+      <div className="flex justify-center items-center h-[70vh] text-black">
         <p className="text-xl opacity-70 font-semibold">
           No Connections Yet 🤝
         </p>

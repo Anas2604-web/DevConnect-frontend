@@ -4,9 +4,11 @@ import { URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import ProfilePreviewCard from "./ProfilePreviewCard";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = ({ user }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
@@ -38,6 +40,7 @@ const EditProfile = ({ user }) => {
 
       dispatch(addUser(res.data.data));
       setSuccess("Profile updated successfully 🚀");
+      navigate("/feed");
     } catch (err) {
       setError(err?.response?.data || "Update failed");
     }
