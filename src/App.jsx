@@ -17,15 +17,19 @@ function App() {
     <Provider store={appStore}>
      <BrowserRouter basename="/">
        <Toaster position="top-center" />
-       <Routes>
-          <Route path="/" element= {<Body />} >
-            <Route path="/login" element= {<Login />} />
-            <Route path="/profile" element= {<Profile />} />
-            <Route path="/feed" element= {<Feed />} />
-            <Route path="/connections" element= {<Connections />} />
-            <Route path="/requests" element= {<Requests />} />
-          </Route>
-       </Routes>
+      <Routes>
+  <Route element={<Body />}>
+
+    <Route path="/" element={<Feed />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/profile" element={<Profile />} />
+    <Route path="/feed" element={<Feed />} />
+    <Route path="/connections" element={<Connections />} />
+    <Route path="/requests" element={<Requests />} />
+
+  </Route>
+</Routes>
+
      </BrowserRouter>
     </Provider>
     </>

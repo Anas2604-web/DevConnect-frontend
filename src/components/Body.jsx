@@ -22,11 +22,14 @@ const Body = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data));
+        if (location.pathname === "/login") {
+      navigate("/feed");
+    }
+
     } catch (err) {
       if (
         err.response?.status === 401 &&
-        location.pathname !== "/login" && 
-        location.pathname !== "/"
+        location.pathname !== "/login"
       ) {
         navigate("/login");
       }
