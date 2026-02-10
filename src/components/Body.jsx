@@ -12,6 +12,8 @@ const Body = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const isLoginPage = location.pathname === "/login";
+
   const user = useSelector((store) => store.user);
 
   const fetchUser = async () => {
@@ -42,11 +44,11 @@ const Body = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      {!isLoginPage && <Navbar />}
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+       {!isLoginPage && <Footer />}
     </div>
   );
 };

@@ -49,7 +49,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex justify-center items-center 
+    <div className="min-h-screen flex justify-center items-center 
       bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 px-4 py-10">
 
       <div className="card w-full max-w-md bg-white/5 backdrop-blur-md 
