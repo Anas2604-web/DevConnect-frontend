@@ -92,9 +92,15 @@ const Feed = () => {
                 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
 
               <div className="absolute bottom-5 left-5 text-white w-[85%]">
-                <h2 className="text-2xl font-bold">
+                <h2 className="flex items-center gap-2 font-semibold">
                   {user.firstName} {user.lastName}, {user.age}
-                </h2>
+
+                  {user.isPremium && (
+                    <span className="text-blue-400 text-xs font-medium">
+                      ✔
+                    </span>
+                  )}
+              </h2>
 
                 <p className="text-sm opacity-80">{user.city}</p>
                 <p className="text-sm mt-1 opacity-80">{user.about}</p>

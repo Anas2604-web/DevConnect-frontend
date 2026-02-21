@@ -43,7 +43,16 @@ const Navbar = () => {
 
         {user && (
           <>
-            <p className="text-sm opacity-80">Welcome {user.firstName}</p>
+         <div className="flex items-center gap-2">
+            <span>Welcome {user?.firstName}</span>
+
+            {user?.isPremium && (
+              <span className="bg-blue-500/20 text-blue-400 text-xs 
+                px-2 py-0.5 rounded-full border border-blue-500/40">
+                ✔Verified
+              </span>
+            )}
+         </div>
 
             <div className="dropdown dropdown-end">
               <div

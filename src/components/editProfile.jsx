@@ -29,15 +29,16 @@ const EditProfile = ({ user }) => {
     .filter(Boolean);
 
   const previewUser = {
-    firstName,
-    lastName,
-    photoUrl,
-    city,
-    about,
-    age,
-    gender,
-    skills: skillsArray
-  };
+  ...user,
+  firstName,
+  lastName,
+  photoUrl,
+  city,
+  about,
+  age,
+  gender,
+  skills: skillsArray,
+};
 
   const handleSave = async (e) => {
     e.preventDefault();
