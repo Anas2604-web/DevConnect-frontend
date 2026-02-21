@@ -97,7 +97,7 @@ const Feed = () => {
 
                   {user.isPremium && (
                     <span className="text-blue-400 text-xs font-medium">
-                      ✔
+                      ✔ Verified
                     </span>
                   )}
               </h2>

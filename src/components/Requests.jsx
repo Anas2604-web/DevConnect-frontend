@@ -84,9 +84,15 @@ const Requests = () => {
                 />
 
                 <div>
-                  <h2 className="text-lg font-semibold">
-                    {user.firstName} {user.lastName}
-                  </h2>
+                  <h2 className="text-lg font-semibold flex items-center gap-1">
+                  {user.firstName} {user.lastName}
+
+                  {user.isPremium && (
+                    <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-0.5 rounded-full border border-blue-500/40">
+                      ✔
+                    </span>
+                  )}
+              </h2>
                   <p className="text-sm opacity-70">
                     {user.city} • {user.age}
                   </p>
