@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFeed, removeFeedUser } from "../utils/feedSlice";
 import TinderCard from "react-tinder-card";
 import toast from "react-hot-toast";
+import UpgradeModal from "./UpgradeModal";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
   const [users, setUsers] = useState([]);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [remainingSwipes, setRemainingSwipes] = useState(null);
 
   const getFeed = async () => {
     if (feed?.length > 0) {
@@ -33,29 +36,42 @@ const Feed = () => {
   }, []);
 
   const handleSwipe = async (dir, userId) => {
-    const status = dir === "right" ? "interested" : "ignored";
+  const status = dir === "right" ? "interested" : "ignored";
 
-    try {
-      const res = await axios.post(
-        URL + `/request/send/${status}/${userId}`,
-        {},
-        { withCredentials: true }
-      );
+  try {
+    const res = await axios.post(
+      URL + `/request/send/${status}/${userId}`,
+      {},
+      { withCredentials: true }
+    );
 
-      if (status === "interested") {
-        toast.success(res.data.message || "Interest Sent ✨");
-      } else {
-        toast("Profile Skipped");
+    if (status === "interested") {
+      toast.success(res.data.message || "Interest Sent ✨");
+    } else {
+      toast("Profile Skipped");
+    }
+
+    if (res.data.remainingSwipes !== undefined) {
+      setRemainingSwipes(res.data.remainingSwipes);
+
+      if (res.data.remainingSwipes === 0) {
+        setShowUpgradeModal(true);
       }
-
-    } catch (err) {
-      toast.error("Already interacted or error");
     }
 
     setUsers(prev => prev.filter(u => u._id !== userId));
     dispatch(removeFeedUser(userId));
-  };
 
+  } catch (err) {
+
+    if (err.response?.status === 403) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
+    toast.error("Already interacted or error");
+  }
+};
   if (!users || users.length === 0) {
     return (
       <div className="flex justify-center items-center h-[70vh] text-black">
@@ -67,11 +83,58 @@ const Feed = () => {
   }
 
   return (
+
     <div className="min-h-[85vh] flex justify-center items-center 
       bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 py-10">
+        {showUpgradeModal && (
+          <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
+        )}
+
+        {remainingSwipes !== null && (
+          <div
+            className={`fixed top-20 right-6 z-40 px-4 py-2 rounded-full shadow-lg font-semibold text-white
+              ${
+                remainingSwipes <= 2
+                  ? "bg-red-600 animate-pulse"
+                  : remainingSwipes <= 3
+                  ? "bg-orange-500"
+                  : "bg-indigo-600"
+              }
+            `}
+          >
+            🔥 {remainingSwipes} swipes left
+          </div>
+        )}
+
+        {remainingSwipes !== null && remainingSwipes <= 3 && (
+  <div
+    className={`fixed top-32 right-6 z-50 
+      px-4 py-3 rounded-xl shadow-xl font-semibold 
+      transition-all duration-300
+      ${
+        remainingSwipes === 0
+          ? "bg-red-700 text-white animate-pulse"
+          : remainingSwipes === 1
+          ? "bg-red-500 text-white animate-pulse"
+          : remainingSwipes === 2
+          ? "bg-yellow-400 text-black animate-bounce"
+          : "bg-orange-500 text-white"
+      }
+    `}
+  >
+    {remainingSwipes === 0
+      ? "🚫 Swipe limit reached - Upgrade to continue"
+      : remainingSwipes === 1
+      ? "⚠️ Last swipe remaining!"
+      : remainingSwipes === 2
+      ? "🔥 Only 2 swipes left!"
+      : "⚠️ Few swipes left"}
+  </div>
+)}
 
       <div className="relative w-80 h-[520px]">
         <div className="absolute inset-0 rounded-3xl bg-indigo-500/20 blur-3xl -z-10" />
+        
 
         {users.map((user) => (
           <TinderCard
